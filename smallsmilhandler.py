@@ -6,10 +6,9 @@ from xml.sax.handler import ContentHandler
 
 
 class SmallSMILHandler(ContentHandler):
-    
-    
-    def __init__ (self):
-        
+
+    def __init__(self):
+
         self.root_layout = " "
         self.root_layout_width = " "
         self.root_layout_height = " "
@@ -35,14 +34,14 @@ class SmallSMILHandler(ContentHandler):
         self.lista = []
         self.diccionario = {}
         self.diccionario_etiqueta = {}
-        
+
     def startElement(self, name, attrs):
         """
         Método que se llama cuando se abre una etiqueta
         """
         self.diccionario = {}
         self.diccionario_etiqueta = {}
-        
+
         if name == "root-layout":
             # De esta manera tomamos los valores de los atributos
             self.diccionario["Etiqueta"] = name
@@ -53,8 +52,7 @@ class SmallSMILHandler(ContentHandler):
             self.diccionario["height"] = self.root_layout_height
             self.diccionario["background_color"] = self.root_layout_background_color
             self.lista.append(self.diccionario)
-            
-            
+
         elif name == "region":
             self.diccionario["Etiqueta"] = name
             self.region_id = attrs.get("id", "")
@@ -68,7 +66,7 @@ class SmallSMILHandler(ContentHandler):
             self.diccionario["left"] = self.region_left
             self.diccionario["right"] = self.region_right
             self.lista.append(self.diccionario)
-            
+
         elif name == "img":
             self.diccionario["Etiqueta"] = name
             self.img_src = attrs.get("src", "")
@@ -80,7 +78,7 @@ class SmallSMILHandler(ContentHandler):
             self.diccionario["begin"] = self.img_begin
             self.diccionario["dur"] = self.img_dur
             self.lista.append(self.diccionario)
-    
+
         elif name == "audio":
             self.diccionario["Etiqueta"] = name
             self.audio_src = attrs.get("src", "")
@@ -90,7 +88,7 @@ class SmallSMILHandler(ContentHandler):
             self.diccionario["begin"] = self.audio_begin
             self.diccionario["dur"] = self.audio_dur
             self.lista.append(self.diccionario)
-            
+
         elif name == "textstream":
             self.diccionario["Etiqueta"] = name
             self.textstream_src = attrs.get("src", "")
@@ -99,12 +97,11 @@ class SmallSMILHandler(ContentHandler):
             self.diccionario["region"] = self.textstream_region
             self.lista.append(self.diccionario)
 
-    def get_tags (self):
-        
+    def get_tags(self):
+
         return self.lista
-        
-        
-        
+
+
 if __name__ == "__main__":
     """
     Programa principal
@@ -114,4 +111,3 @@ if __name__ == "__main__":
     parser.setContentHandler(cHandler)
     parser.parse(open('karaoke.smil'))
     print(cHandler.get_tags())
-    
