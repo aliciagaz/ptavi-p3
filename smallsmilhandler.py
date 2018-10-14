@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from xml.sax import make_parser
@@ -8,42 +8,19 @@ from xml.sax.handler import ContentHandler
 class SmallSMILHandler(ContentHandler):
 
     def __init__(self):
-
-        self.root_layout = " "
-        self.root_layout_width = " "
-        self.root_layout_height = " "
-        self.root_layout_background_color = " "
-        self.region = " "
-        self.region_id = " "
-        self.region_top = " "
-        self.region_bottom = " "
-        self.region_left = " "
-        self.region_right = " "
-        self.img = " "
-        self.img_src = " "
-        self.img_region = " "
-        self.img_begin = " "
-        self.img_dur = " "
-        self.audio = " "
-        self.audio_src = " "
-        self.audio_begin = " "
-        self.audio_dur = " "
-        self.textstream = " "
-        self.textstream_src = " "
-        self.textstream_region = " "
+        self.dicionario = {
+                "root_layout": ["width", "height", "background-color"],
+                "region": ["id", "op", "bottom", "left", "right"],
+                "img": ["src", "region", "begin", "dur"],
+                "audio": ["src", "begin", "dur"],
+                "textstream": ["src", "region"]}
         self.lista = []
-        self.diccionario = {}
-        self.diccionario_etiqueta = {}
 
     def startElement(self, name, attrs):
-        """
-        Método que se llama cuando se abre una etiqueta
-        """
+
         self.diccionario = {}
         self.diccionario_etiqueta = {}
-
         if name == "root-layout":
-            # De esta manera tomamos los valores de los atributos
             self.diccionario["Etiqueta"] = name
             self.root_layout_width = attrs.get("width", "")
             self.root_layout_height = attrs.get("height", "")
@@ -98,16 +75,13 @@ class SmallSMILHandler(ContentHandler):
             self.lista.append(self.diccionario)
 
     def get_tags(self):
-
         return self.lista
 
 
 if __name__ == "__main__":
-    """
-    Programa principal
-    """
+
     parser = make_parser()
     cHandler = SmallSMILHandler()
     parser.setContentHandler(cHandler)
     parser.parse(open('karaoke.smil'))
-    print(cHandler.get_tags())
+print(cHandler.get_tags())
